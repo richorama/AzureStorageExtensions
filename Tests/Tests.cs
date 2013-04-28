@@ -14,7 +14,7 @@ namespace Two10.AzureGraphStore.Tests
             var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
-            graph.Delete();
+            graph.DeleteIfExists();
         }
 
         [TestFixtureSetUp]

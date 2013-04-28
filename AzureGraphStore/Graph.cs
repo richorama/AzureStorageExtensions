@@ -31,11 +31,25 @@ namespace Two10.AzureGraphStore
             subjectValueTable.Delete();
         }
 
+        public void DeleteIfExists()
+        {
+            valuePropertyTable.DeleteIfExists();
+            propertySubjectTable.DeleteIfExists();
+            subjectValueTable.DeleteIfExists();
+        }
+
         public void CreateIfNotExists()
         {
             valuePropertyTable.CreateIfNotExists();
             subjectValueTable.CreateIfNotExists();
             propertySubjectTable.CreateIfNotExists();
+        }
+
+        public void Create()
+        {
+            valuePropertyTable.Create();
+            subjectValueTable.Create();
+            propertySubjectTable.Create();
         }
 
         public void Put(Triple triple)
