@@ -24,32 +24,30 @@ namespace Two10.AzureGraphStore
             propertySubjectTable = tableClient.GetTableReference(string.Format("wazgraph{0}propertysubject", name));
         }
 
+        private void ApplyToTables(Action<CloudTable> action)
+        {
+            var tables = new [] {valuePropertyTable, subjectValueTable, propertySubjectTable};
+            Parallel.ForEach(tables, action);
+        }
+
         public void Delete()
         {
-            valuePropertyTable.Delete();
-            propertySubjectTable.Delete();
-            subjectValueTable.Delete();
+            ApplyToTables(x => x.Delete());
         }
 
         public void DeleteIfExists()
         {
-            valuePropertyTable.DeleteIfExists();
-            propertySubjectTable.DeleteIfExists();
-            subjectValueTable.DeleteIfExists();
+            ApplyToTables(x => x.DeleteIfExists());
         }
 
         public void CreateIfNotExists()
         {
-            valuePropertyTable.CreateIfNotExists();
-            subjectValueTable.CreateIfNotExists();
-            propertySubjectTable.CreateIfNotExists();
+            ApplyToTables(x => x.CreateIfNotExists());
         }
 
         public void Create()
         {
-            valuePropertyTable.Create();
-            subjectValueTable.Create();
-            propertySubjectTable.Create();
+            ApplyToTables(x => x.Create());
         }
 
         public void Put(Triple triple)
@@ -122,7 +120,7 @@ namespace Two10.AzureGraphStore
             var hasProperty = !string.IsNullOrWhiteSpace(property);
             var hasValue = !string.IsNullOrWhiteSpace(value);
 
-            // this is where we wished .NET had pattern matching
+            // this is where we wish .NET has pattern matching
             if (hasSubject && hasProperty && hasValue)
             {
                 // simple case, retrieve the entity

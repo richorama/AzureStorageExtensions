@@ -23,7 +23,7 @@ namespace Two10.AzureGraphStore
 
         public override string ToString()
         {
-            return string.Format("{0} {1}'s {2}", this.Subject, this.Property, this.Value);
+            return string.Format("{0} {1} {2}", this.Subject, this.Property, this.Value);
         }
     }
 }
