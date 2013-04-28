@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureGraphStore", "AzureGraphStore\Two10.AzureGraphStore.csproj", "{AD7FB5DC-92B1-49F0-BC73-0311B1DBF9D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureGraphStore.Tests", "Two10.AzureGraphStore.Tests\Two10.AzureGraphStore.Tests.csproj", "{63E1BE97-2388-48A1-B63C-5E816429FDD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureGraphStore.Tests", "Tests\Two10.AzureGraphStore.Tests.csproj", "{63E1BE97-2388-48A1-B63C-5E816429FDD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
