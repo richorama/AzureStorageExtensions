@@ -1,19 +1,21 @@
 ﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Two10.AzureGraphStore
 {
     public class GraphClient
     {
-        private readonly CloudStorageAccount account;
+        private readonly CloudTableClient tableClient;
 
         public GraphClient(CloudStorageAccount account)
         {
-            this.account = account;
+            this.tableClient = account.CreateCloudTableClient();
         }
 
         public Graph GetGraphReference(string name)
         {
-            return new Graph(this.account, name);
+            var table = tableClient.GetTableReference(string.Format("wazgraph{0}", name));
+            return new Graph(table, name);
         }
 
     }

@@ -18,11 +18,10 @@ namespace Two10.AzureGraphStore
         private const string VALUE_PROPERTY = "vp";
 
 
-        public Graph(CloudStorageAccount account, string name)
+        public Graph(CloudTable table, string name)
         {
             this.Name = name;
-            var tableClient = account.CreateCloudTableClient();
-            table = tableClient.GetTableReference(string.Format("wazgraph{0}", name));
+            this.table = table;
         }
 
         public void Delete()
