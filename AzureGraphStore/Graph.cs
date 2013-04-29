@@ -9,45 +9,40 @@ namespace Two10.AzureGraphStore
 {
     public class Graph
     {
-        private readonly CloudTable valuePropertyTable;
-        private readonly CloudTable subjectValueTable;
-        private readonly CloudTable propertySubjectTable;
+        private readonly CloudTable table;
 
         public string Name { get; private set; }
+
+        private const string PROPERTY_SUBJECT = "ps";
+        private const string SUBJECT_VALUE = "sv";
+        private const string VALUE_PROPERTY = "vp";
+
 
         public Graph(CloudStorageAccount account, string name)
         {
             this.Name = name;
             var tableClient = account.CreateCloudTableClient();
-            valuePropertyTable = tableClient.GetTableReference(string.Format("wazgraph{0}valueproperty", name));
-            subjectValueTable = tableClient.GetTableReference(string.Format("wazgraph{0}subjectvalue", name));
-            propertySubjectTable = tableClient.GetTableReference(string.Format("wazgraph{0}propertysubject", name));
-        }
-
-        private void ApplyToTables(Action<CloudTable> action)
-        {
-            var tables = new [] {valuePropertyTable, subjectValueTable, propertySubjectTable};
-            Parallel.ForEach(tables, action);
+            table = tableClient.GetTableReference(string.Format("wazgraph{0}", name));
         }
 
         public void Delete()
         {
-            ApplyToTables(x => x.Delete());
+            table.Delete();
         }
 
         public void DeleteIfExists()
         {
-            ApplyToTables(x => x.DeleteIfExists());
+            table.DeleteIfExists();
         }
 
         public void CreateIfNotExists()
         {
-            ApplyToTables(x => x.CreateIfNotExists());
+            table.CreateIfNotExists();
         }
 
         public void Create()
         {
-            ApplyToTables(x => x.Create());
+            table.Create();
         }
 
         public void Put(Triple triple)
@@ -57,18 +52,18 @@ namespace Two10.AzureGraphStore
                 {
                     () =>
                         {
-                            var entity1 = new GraphEntity(triple) { PartitionKey = JoinKey(triple.Property, triple.Subject), RowKey = triple.Value };
-                            propertySubjectTable.Execute(TableOperation.InsertOrReplace(entity1));
+                            var entity1 = new GraphEntity(triple) { PartitionKey = JoinKey(PROPERTY_SUBJECT, triple.Property, triple.Subject), RowKey = triple.Value };
+                            table.Execute(TableOperation.InsertOrReplace(entity1));
                         },
                     () =>
                         {
-                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(triple.Subject, triple.Value), RowKey = triple.Property};
-                            subjectValueTable.Execute(TableOperation.InsertOrReplace(entity2));
+                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(SUBJECT_VALUE, triple.Subject, triple.Value), RowKey = triple.Property};
+                            table.Execute(TableOperation.InsertOrReplace(entity2));
                         },
                     () =>
                         {
-                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(triple.Value, triple.Property), RowKey = triple.Subject};
-                            valuePropertyTable.Execute(TableOperation.InsertOrReplace(entity3));
+                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(VALUE_PROPERTY, triple.Value, triple.Property), RowKey = triple.Subject};
+                            table.Execute(TableOperation.InsertOrReplace(entity3));
                         }
                 };
 
@@ -86,18 +81,18 @@ namespace Two10.AzureGraphStore
                 {
                     () =>
                         {
-                            var entity1 = new GraphEntity(triple) {PartitionKey = JoinKey(triple.Property, triple.Subject), RowKey = triple.Value, ETag = "*"};
-                            propertySubjectTable.Execute(TableOperation.Delete(entity1));
+                            var entity1 = new GraphEntity(triple) {PartitionKey = JoinKey(PROPERTY_SUBJECT, triple.Property, triple.Subject), RowKey = triple.Value, ETag = "*"};
+                            table.Execute(TableOperation.Delete(entity1));
                         },
                     () =>
                         {
-                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(triple.Subject, triple.Value), RowKey = triple.Property, ETag = "*"};
-                            subjectValueTable.Execute(TableOperation.Delete(entity2));
+                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(SUBJECT_VALUE, triple.Subject, triple.Value), RowKey = triple.Property, ETag = "*"};
+                            table.Execute(TableOperation.Delete(entity2));
                         },
                     () =>
                         {
-                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(triple.Value, triple.Property), RowKey = triple.Subject, ETag = "*"};
-                            valuePropertyTable.Execute(TableOperation.Delete(entity3));
+                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(VALUE_PROPERTY, triple.Value, triple.Property), RowKey = triple.Subject, ETag = "*"};
+                            table.Execute(TableOperation.Delete(entity3));
                         }
                 };
 
@@ -109,9 +104,9 @@ namespace Two10.AzureGraphStore
             this.Delete(new Triple(subject, property, value));
         }
 
-        private static string JoinKey(string value1, string value2)
+        private static string JoinKey(string dimension, string value1, string value2)
         {
-            return string.Format("{0}~{1}", value1, value2);
+            return string.Format("{0}~{1}~{2}", dimension, value1, value2);
         }
 
         public IEnumerable<Triple> Get(string subject = "", string property = "", string value = "")
@@ -132,50 +127,50 @@ namespace Two10.AzureGraphStore
                 if (hasProperty)
                 {
                     // subject and property
-                    return QueryTriples(propertySubjectTable, property, subject);
+                    return QueryTriples(table, PROPERTY_SUBJECT, property, subject);
                 }
                 if (hasValue)
                 {
                     // subject and value
-                    return QueryTriples(subjectValueTable, subject, value);
+                    return QueryTriples(table, SUBJECT_VALUE, subject, value);
                 }
-                return QueryTriples(subjectValueTable, subject);
+                return QueryTriples(table, SUBJECT_VALUE, subject);
             }
             if (hasValue)
             {
                 if (hasProperty)
                 {
-                    return QueryTriples(valuePropertyTable, value, property);
+                    return QueryTriples(table, VALUE_PROPERTY, value, property);
                 }
-                return QueryTriples(valuePropertyTable, value);
+                return QueryTriples(table, VALUE_PROPERTY, value);
             }
             if (hasProperty)
             {
-                return QueryTriples(propertySubjectTable, property);
+                return QueryTriples(table, PROPERTY_SUBJECT, property);
             }
             throw new ArgumentException("Please supply at least one argument");
         }
 
         private IEnumerable<Triple> RetrieveSingleTriple(string subject, string property, string value)
         {
-            var val = subjectValueTable.Execute(TableOperation.Retrieve<GraphEntity>(JoinKey(subject, value), property));
+            var val = table.Execute(TableOperation.Retrieve<GraphEntity>(JoinKey(SUBJECT_VALUE,subject, value), property));
             if (null != val.Result)
             {
                 yield return new Triple(subject, property, value);
             }
         }
 
-        private IEnumerable<Triple> QueryTriples(CloudTable table, string pk1, string pk2)
+        private IEnumerable<Triple> QueryTriples(CloudTable table, string dimension, string pk1, string pk2)
         {
             var query = new TableQuery<GraphEntity>();
-            query.Where(TableQuery.GenerateFilterCondition("PartitionKey", "eq", JoinKey(pk1, pk2)));
+            query.Where(TableQuery.GenerateFilterCondition("PartitionKey", "eq", JoinKey(dimension, pk1, pk2)));
             return table.ExecuteQuery(query).Select(entity => entity.ToTriple());
         }
 
-        private IEnumerable<Triple> QueryTriples(CloudTable table, string pk1)
+        private IEnumerable<Triple> QueryTriples(CloudTable table, string dimension, string pk1)
         {
             var query = new TableQuery<GraphEntity>();
-            query.Where(string.Format("PartitionKey gt '{0}~' and PartitionKey lt '{0}~~'", pk1));
+            query.Where(string.Format("PartitionKey gt '{1}~{0}~' and PartitionKey lt '{1}~{0}~~'", pk1, dimension));
             return table.ExecuteQuery(query).Select(entity => entity.ToTriple());
         }
     }
