@@ -106,5 +106,15 @@ namespace Two10.AzureGraphStore.Tests
 
         }
 
+        [Test]
+        public void TestListGraphs()
+        {
+            var account = CloudStorageAccount.DevelopmentStorageAccount;
+            var graphClient = account.CreateCloudGraphClient();
+            var items = graphClient.ListGraphs().Select(x => x.Name).ToArray();
+            Assert.Contains("test", items);
+            Assert.AreEqual(1, items.Length);
+        }
+
     }
 }

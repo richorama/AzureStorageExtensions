@@ -1,5 +1,7 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using System.Collections.Generic;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Linq;
 
 namespace Two10.AzureGraphStore
 {
@@ -16,6 +18,15 @@ namespace Two10.AzureGraphStore
         {
             var table = tableClient.GetTableReference(string.Format("wazgraph{0}", name));
             return new Graph(table, name);
+        }
+
+        public IEnumerable<Graph> ListGraphs()
+        {
+            return this.tableClient.ListTables().Where(x => x.Name.StartsWith("wazgraph")).Select(x =>
+                {
+                    var name = x.Name.Replace("wazgraph", "");
+                    return this.GetGraphReference(name);
+                });
         }
 
     }
