@@ -8,10 +8,11 @@ namespace Two10.AzureGraphStore.Tests
     public class Tests
     {
 
+        private CloudStorageAccount account = CloudStorageAccount.DevelopmentStorageAccount;
+
         [TestFixtureTearDown]
         public void TearDown()
         {
-            var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.DeleteIfExists();
@@ -20,7 +21,6 @@ namespace Two10.AzureGraphStore.Tests
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.CreateIfNotExists();
@@ -29,7 +29,6 @@ namespace Two10.AzureGraphStore.Tests
         [Test]
         public void TestSingleEntity()
         {
-            var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.Put(new Triple("Richard", "Loves", "Spam"));
@@ -44,7 +43,6 @@ namespace Two10.AzureGraphStore.Tests
         [Test]
         public void TestMultipleEntities()
         {
-            var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.Put(new Triple("Bob", "Loves", "DotNet"));
@@ -70,7 +68,6 @@ namespace Two10.AzureGraphStore.Tests
         [Test]
         public void TestDelete()
         {
-            var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.Put("Wendy", "Likes", "Cheese");
@@ -87,9 +84,9 @@ namespace Two10.AzureGraphStore.Tests
         [Test]
         public void TestQueryBySingleDimension()
         {
-            var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
-            var graph = graphClient.GetGraphReference("test");
+            var graph = graphClient.GetGraphReference("testsingledimension");
+            graph.CreateIfNotExists();
             graph.Put("Dave", "Likes", "Chicken");
             graph.Put("Darren", "Likes", "Chicken");
             graph.Put("Dean", "Hates", "Chicken");
@@ -104,12 +101,14 @@ namespace Two10.AzureGraphStore.Tests
             triples = graph.Get(null, "Likes").ToArray();
             Assert.AreEqual(2, triples.Length);
 
+            triples = graph.Get().ToArray();
+            Assert.AreEqual(4, triples.Length);
+            graph.Delete();
         }
 
         [Test]
         public void TestListGraphs()
         {
-            var account = CloudStorageAccount.DevelopmentStorageAccount;
             var graphClient = account.CreateCloudGraphClient();
             var items = graphClient.ListGraphs().Select(x => x.Name).ToArray();
             Assert.Contains("test", items);

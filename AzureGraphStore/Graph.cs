@@ -126,28 +126,30 @@ namespace Two10.AzureGraphStore
                 if (hasProperty)
                 {
                     // subject and property
-                    return QueryTriples(table, PROPERTY_SUBJECT, property, subject);
+                    return QueryTriples(PROPERTY_SUBJECT, property, subject);
                 }
                 if (hasValue)
                 {
                     // subject and value
-                    return QueryTriples(table, SUBJECT_VALUE, subject, value);
+                    return QueryTriples(SUBJECT_VALUE, subject, value);
                 }
-                return QueryTriples(table, SUBJECT_VALUE, subject);
+                return QueryTriples(SUBJECT_VALUE, subject);
             }
             if (hasValue)
             {
                 if (hasProperty)
                 {
-                    return QueryTriples(table, VALUE_PROPERTY, value, property);
+                    return QueryTriples(VALUE_PROPERTY, value, property);
                 }
-                return QueryTriples(table, VALUE_PROPERTY, value);
+                return QueryTriples(VALUE_PROPERTY, value);
             }
             if (hasProperty)
             {
-                return QueryTriples(table, PROPERTY_SUBJECT, property);
+                return QueryTriples(PROPERTY_SUBJECT, property);
             }
-            throw new ArgumentException("Please supply at least one argument");
+            
+            // return all triples, not recommended!
+            return QueryTriples();
         }
 
         private IEnumerable<Triple> RetrieveSingleTriple(string subject, string property, string value)
@@ -159,17 +161,24 @@ namespace Two10.AzureGraphStore
             }
         }
 
-        private IEnumerable<Triple> QueryTriples(CloudTable table, string dimension, string pk1, string pk2)
+        private IEnumerable<Triple> QueryTriples(string dimension, string pk1, string pk2)
         {
             var query = new TableQuery<GraphEntity>();
             query.Where(TableQuery.GenerateFilterCondition("PartitionKey", "eq", JoinKey(dimension, pk1, pk2)));
             return table.ExecuteQuery(query).Select(entity => entity.ToTriple());
         }
 
-        private IEnumerable<Triple> QueryTriples(CloudTable table, string dimension, string pk1)
+        private IEnumerable<Triple> QueryTriples(string dimension, string pk1)
         {
             var query = new TableQuery<GraphEntity>();
             query.Where(string.Format("PartitionKey gt '{1}~{0}~' and PartitionKey lt '{1}~{0}~~'", pk1, dimension));
+            return table.ExecuteQuery(query).Select(entity => entity.ToTriple());
+        }
+
+        private IEnumerable<Triple> QueryTriples()
+        {
+            var query = new TableQuery<GraphEntity>();
+            query.Where(string.Format("PartitionKey gt '{0}~' and PartitionKey lt '{0}~~'", SUBJECT_VALUE));
             return table.ExecuteQuery(query).Select(entity => entity.ToTriple());
         }
     }
