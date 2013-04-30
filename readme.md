@@ -38,6 +38,7 @@ var triples = graph.Get(property: "Loves");
 var triples = graph.Get(values: "Cheese");
 var triples = graph.Get(subject: "Richard", property: "Hates");
 var triples = graph.Get(property: "Hates", value: "Marmite");
+var triples = graph.Get(); // retrieving the entire graph is not recommended!
 ```
 
 **Delete triples from the graph:**
