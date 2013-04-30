@@ -17,9 +17,9 @@ namespace Two10.AzureGraphStore
             this.Value = value;
         }
 
-        public string Subject { get; set; }
-        public string Property { get; set; }
-        public string Value { get; set; }
+        public string Subject { get; private set; }
+        public string Property { get; private set; }
+        public string Value { get; private set; }
 
         public override string ToString()
         {
