@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>AzureGraphStorage</title>
+    <authors>Richard Astbury</authors>
+    <owners>Richard Astbury</owners>
+    <licenseUrl>https://raw.github.com/richorama/AzureGraphStore/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/richorama/AzureGraphStore</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An extension to the .NET SDK for Windows Azure Storage which adds a triple store abstraction over Table Storage.</description>
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright 2013</copyright>
+    <tags>Azure Graph Triple Store Table Storage</tags>
+  </metadata>
+</package>
