@@ -4,6 +4,14 @@ An extension to the .NET SDK for Windows Azure Storage which adds a triple store
 
 In simple terms, it makes it easy to use Table Storage as a graph database.
 
+## Install
+
+Install using the [nuget package](https://nuget.org/packages/AzureGraphStore/):
+
+```
+PM> Install-Package AzureGraphStore
+```
+
 ## Example Usage
 
 **Create a graph**
