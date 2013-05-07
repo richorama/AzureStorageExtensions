@@ -16,7 +16,7 @@ PM> Install-Package AzureGraphStore
 
 **Create a graph**
 
-```
+```c#
 var account = CloudStorageAccount.DevelopmentStorageAccount;
 var graphClient = account.CreateCloudGraphClient();
 var graph = graphClient.GetGraphReference("example");
@@ -25,7 +25,7 @@ graph.CreateIfNotExists();
 
 **Add triples to the graph**
 
-```
+```c#
 // insert subject, property and value directly:
 graph.Put("Richard", "Loves", "Cheese");
 
@@ -36,7 +36,7 @@ graph.Put(triple);
 
 **Query the graph**
 
-```
+```c#
 // query a single triple
 var triple = graph.Get("Richard", "Loves", "Cheese").First();
 
@@ -51,7 +51,7 @@ var triples = graph.Get(); // retrieving the entire graph is not recommended!
 
 **Delete triples from the graph:**
 
-```
+```c#
 graph.Delete("Richard", "Loves", "Cheese");
 graph.Delete(triple);
 ```
