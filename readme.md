@@ -1,4 +1,4 @@
-# AzureGraphStorage
+# AzureGraphStore
 
 An extension to the .NET SDK for Windows Azure Storage which adds a triple store abstraction over Table Storage.
 
