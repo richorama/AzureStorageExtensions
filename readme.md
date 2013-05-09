@@ -76,7 +76,7 @@ PM> Install-Package AzureJsonStore
 
 We'll use this class to store objects:
 
-```
+```c#
 class Foo
 {
     public string Bar { get; set; }
@@ -95,25 +95,25 @@ store.CreateIfNotExists();
 
 **Add objects to the store**
 
-```
+```c#
 store.Put("foo1", new Foo{ Bar = "Hello", Baz = 3});
 ```
 
 **Get objects from the store**
 
-```
+```c#
 var foo = store.Get("foo1");
 ```
 
 **Query the store for objects**
 
-```
+```c#
 var foos = store.Query();
 ```
 
 **Delete objects from the store**
 
-```
+```c#
 store.Delete("foo1");
 ```
 
