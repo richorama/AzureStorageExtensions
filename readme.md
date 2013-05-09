@@ -74,7 +74,7 @@ PM> Install-Package AzureJsonStore
 
 ### Example Usage
 
-We'll use this class to store objects:
+We can use any POCO class, as long as it can be serialized to JSON. For this sample, we'll use this 'Foo' class:
 
 ```c#
 class Foo

@@ -3,15 +3,15 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <title>AzureGraphStore</title>
+    <title>AzureJsonStore</title>
     <authors>richorama</authors>
     <owners>richorama</owners>
     <licenseUrl>https://raw.github.com/richorama/AzureStorageExtensions/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/richorama/AzureStorageExtensions</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>An extension to the .NET SDK for Windows Azure Storage which adds a triple store abstraction over Table Storage.</description>
+    <description>A strongly typed object store, using JSON to persist data in blob storage.</description>
     <releaseNotes>First version.</releaseNotes>
     <copyright>Copyright 2013</copyright>
-    <tags>Azure Graph Triple Store Table Storage</tags>
+    <tags>Azure Json Blob Store NoSQL Storage</tags>
   </metadata>
 </package>

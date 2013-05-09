@@ -27,3 +27,4 @@ TestResult.xml
 Output
 *.cache
 *.suo
+*.nupkg

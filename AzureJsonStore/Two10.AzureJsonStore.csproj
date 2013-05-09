@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Two10.AzureJsonStore</RootNamespace>
-    <AssemblyName>Two10.AzureJsonStore</AssemblyName>
+    <AssemblyName>AzureJsonStore</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JsonClient.cs" />
+    <Compile Include="JsonStoreClient.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="JsonStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
