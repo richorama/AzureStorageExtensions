@@ -4,9 +4,9 @@
 
     public static class Extensions
     {
-        public static JsonClient CreateCloudJsonClient(this CloudStorageAccount account)
+        public static JsonStoreClient CreateCloudJsonClient(this CloudStorageAccount account)
         {
-            return new JsonClient(account);
+            return new JsonStoreClient(account);
         }
     }
 }

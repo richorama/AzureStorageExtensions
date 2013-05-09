@@ -88,8 +88,8 @@ class Foo
 
 ```c#
 var account = CloudStorageAccount.DevelopmentStorageAccount;
-var jsonClient = account.CreateCloudJsonClient();
-var store = jsonClient.GetJsonReference<Foo>("foostore");
+var jsonStoreClient = account.CreateCloudJsonStoreClient();
+var store = jsonStoreClient.GetJsonStoreReference<Foo>("foostore");
 store.CreateIfNotExists();
 ```
 

@@ -5,12 +5,12 @@
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
 
-    public class JsonClient
+    public class JsonStoreClient
     {
 
         private readonly CloudBlobClient blobClient;
 
-        public JsonClient(CloudStorageAccount account)
+        public JsonStoreClient(CloudStorageAccount account)
         {
             this.blobClient = account.CreateCloudBlobClient();
         }
