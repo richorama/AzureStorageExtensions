@@ -52,6 +52,10 @@ namespace Two10.AzureGraphStore.Tests
             var items = store.Query().ToArray();
             Assert.AreEqual(1, items.Length);
             Assert.AreEqual("item1", items[0]);
+
+            store.Delete("item1");
+            items = store.Query().ToArray();
+            Assert.AreEqual(0, items.Length);
         }
 
         [Test]

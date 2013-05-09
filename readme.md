@@ -1,10 +1,14 @@
-# AzureGraphStore
+# Azure Storage Extensions
+
+A set of extensions to the Azure Storage SDK, to easily enable new types of storage, as abstractions over existing services.
+
+## AzureGraphStore
 
 An extension to the .NET SDK for Windows Azure Storage which adds a triple store abstraction over Table Storage.
 
 In simple terms, it makes it easy to use Table Storage as a graph database.
 
-## Installation
+### Installation
 
 Install using the [nuget package](https://nuget.org/packages/AzureGraphStore/):
 
@@ -12,7 +16,7 @@ Install using the [nuget package](https://nuget.org/packages/AzureGraphStore/):
 PM> Install-Package AzureGraphStore
 ```
 
-## Example Usage
+### Example Usage
 
 **Create a graph**
 
@@ -54,6 +58,63 @@ var triples = graph.Get(); // retrieving the entire graph is not recommended!
 ```c#
 graph.Delete("Richard", "Loves", "Cheese");
 graph.Delete(triple);
+```
+
+## AzureJsonStore
+
+A strongly typed object store, using JSON to persist data in blob storage.
+
+### Installation
+
+Install using the [nuget package](https://nuget.org/packages/AzureJsonStore/):
+
+```
+PM> Install-Package AzureJsonStore
+```
+
+### Example Usage
+
+We'll use this class to store objects:
+
+```
+class Foo
+{
+    public string Bar { get; set; }
+    public int Baz { get; set; }
+}
+```
+
+**Create a store**
+
+```c#
+var account = CloudStorageAccount.DevelopmentStorageAccount;
+var jsonClient = account.CreateCloudJsonClient();
+var store = jsonClient.GetJsonReference<Foo>("foostore");
+store.CreateIfNotExists();
+```
+
+**Add objects to the store**
+
+```
+store.Put("foo1", new Foo{ Bar = "Hello", Baz = 3});
+```
+
+**Get objects from the store**
+
+```
+var foo = store.Get("foo1");
+```
+
+**Query the store for objects**
+
+```
+var foos = store.Query();
+```
+
+**Delete objects from the store**
+
+```
+store.Delete("foo1");
 ```
 
 ## License
