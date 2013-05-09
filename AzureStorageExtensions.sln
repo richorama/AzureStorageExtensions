@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureGraphStore", "AzureGraphStore\Two10.AzureGraphStore.csproj", "{AD7FB5DC-92B1-49F0-BC73-0311B1DBF9D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureGraphStore.Tests", "Tests\Two10.AzureGraphStore.Tests.csproj", "{63E1BE97-2388-48A1-B63C-5E816429FDD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.StorageExtension.Tests", "Tests\Two10.StorageExtension.Tests.csproj", "{63E1BE97-2388-48A1-B63C-5E816429FDD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureJsonStore", "AzureJsonStore\Two10.AzureJsonStore.csproj", "{CCEA8B58-72AB-4F05-A895-47D3DF61A5AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +21,10 @@ Global
 		{63E1BE97-2388-48A1-B63C-5E816429FDD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63E1BE97-2388-48A1-B63C-5E816429FDD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63E1BE97-2388-48A1-B63C-5E816429FDD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCEA8B58-72AB-4F05-A895-47D3DF61A5AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCEA8B58-72AB-4F05-A895-47D3DF61A5AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCEA8B58-72AB-4F05-A895-47D3DF61A5AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCEA8B58-72AB-4F05-A895-47D3DF61A5AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

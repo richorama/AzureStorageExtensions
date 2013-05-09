@@ -1,11 +1,12 @@
 ﻿using System.Linq;
 using Microsoft.WindowsAzure.Storage;
 using NUnit.Framework;
+using Two10.AzureGraphStore;
 
-namespace Two10.AzureGraphStore.Tests
+namespace Two10.StorageExtension.Tests
 {
     [TestFixture]
-    public class Tests
+    public class TestGraphStore
     {
 
         private CloudStorageAccount account = CloudStorageAccount.DevelopmentStorageAccount;
