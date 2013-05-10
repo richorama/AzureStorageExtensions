@@ -73,6 +73,10 @@ namespace Two10.StorageExtension.Tests
             item = index.Get("X", "Y");
             Assert.IsNotNull(item);
             Assert.AreEqual("BAZ", item.Metadata["BAR"]);
+
+            index.Delete("X", "Y");
+            item = index.Get("X", "Y");
+            Assert.IsNull(item);
         }
     }
 }

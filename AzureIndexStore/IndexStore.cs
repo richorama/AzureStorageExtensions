@@ -44,6 +44,11 @@ namespace Two10.AzureIndexStore
             return table.ExecuteQuery(query).Select(entity => entity.ToEntry());
         }
 
+        public void Delete(string key, string value)
+        {
+            table.Execute(TableOperation.Delete(new IndexEntity<T>(key, value, default(T)){ ETag = "*"}));
+        }
+
         public void Delete()
         {
             table.Delete();
