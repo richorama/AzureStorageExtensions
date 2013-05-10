@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
@@ -27,6 +28,18 @@ namespace Two10.AzureIndexStore
         {
             var table = tableClient.GetTableReference(string.Format("wazindex{0}", name));
             return new IndexStore<Dictionary<string, string>>(table, name);
+        }
+
+        public CachedIndexStore<T> GetCachedIndexReference<T>(string name, CacheItemPolicy policy)
+        {
+            var table = tableClient.GetTableReference(string.Format("wazindex{0}", name));
+            return new CachedIndexStore<T>(table, name, policy);
+        }
+
+        public CachedIndexStore<Dictionary<string, string>> GetCachedIndexReference(string name, CacheItemPolicy policy)
+        {
+            var table = tableClient.GetTableReference(string.Format("wazindex{0}", name));
+            return new CachedIndexStore<Dictionary<string, string>>(table, name, policy);
         }
 
         public IEnumerable<string> ListIndexs()

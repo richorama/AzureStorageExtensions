@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Two10.AzureIndexStore
@@ -9,7 +10,7 @@ namespace Two10.AzureIndexStore
     {
         public string Name { get; private set; }
 
-        private readonly CloudTable table;
+        protected readonly CloudTable table;
 
         public IndexStore(CloudTable table, string name)
         {
@@ -37,7 +38,7 @@ namespace Two10.AzureIndexStore
             return (result.Result as IndexEntity<T>).ToEntry();
         }
 
-        public IEnumerable<IndexEntry<T>> Query(string key)
+        public virtual IEnumerable<IndexEntry<T>> Query(string key)
         {
             var query = new TableQuery<IndexEntity<T>>();
             query.Where(TableQuery.GenerateFilterCondition("PartitionKey", "eq", key));

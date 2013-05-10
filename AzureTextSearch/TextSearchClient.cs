@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
@@ -21,7 +22,7 @@ namespace Two10.AzureTextSearch
         public TextSearchIndex GetTextSearchIndexReference(string name)
         {
             var table = tableClient.GetTableReference(string.Format("waztextsearch{0}", name));
-            return new TextSearchIndex(new IndexStore<Metadata>(table, name));
+            return new TextSearchIndex(new CachedIndexStore<Metadata>(table, name, new CacheItemPolicy(){ SlidingExpiration = TimeSpan.FromMinutes(5)}));
         }
 
         public IEnumerable<string> ListTextSearchIndexes()
