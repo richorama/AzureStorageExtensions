@@ -23,6 +23,12 @@ namespace Two10.AzureIndexStore
             return new IndexStore<T>(table, name);
         }
 
+        public IndexStore<Dictionary<string,string>> GetIndexReference(string name)
+        {
+            var table = tableClient.GetTableReference(string.Format("wazindex{0}", name));
+            return new IndexStore<Dictionary<string, string>>(table, name);
+        }
+
         public IEnumerable<string> ListIndexs()
         {
             return this.tableClient.ListTables().Where(x => x.Name.StartsWith("wazindex")).Select(x =>

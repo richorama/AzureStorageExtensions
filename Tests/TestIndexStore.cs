@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.WindowsAzure.Storage;
 using NUnit.Framework;
 
@@ -54,6 +55,24 @@ namespace Two10.StorageExtension.Tests
             Assert.AreEqual("B", item2.Value);
             Assert.IsNotNull(item2.Metadata);
             Assert.AreEqual(4, item2.Metadata.Count);
+        }
+
+        [Test]
+        public void TestDictionary()
+        {
+            var indexClient = account.CreateCloudIndexClient();
+            var index = indexClient.GetIndexReference("test2");
+            index.CreateIfNotExists();
+            index.Put("X", "Y");
+            var item = index.Get("X", "Y");
+            Assert.IsNotNull(item);
+
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("BAR", "BAZ");
+            index.Put("X", "Y", dictionary);
+            item = index.Get("X", "Y");
+            Assert.IsNotNull(item);
+            Assert.AreEqual("BAZ", item.Metadata["BAR"]);
         }
     }
 }
