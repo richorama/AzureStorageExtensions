@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureJsonStore", "Azu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureIndexStore", "AzureIndexStore\Two10.AzureIndexStore.csproj", "{BA1A6F28-F49F-484C-9F59-97DBB66E746B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureTextSearch", "AzureTextSearch\Two10.AzureTextSearch.csproj", "{4F21975A-378E-46FA-B73C-10AABAC54C5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{BA1A6F28-F49F-484C-9F59-97DBB66E746B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA1A6F28-F49F-484C-9F59-97DBB66E746B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA1A6F28-F49F-484C-9F59-97DBB66E746B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F21975A-378E-46FA-B73C-10AABAC54C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F21975A-378E-46FA-B73C-10AABAC54C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F21975A-378E-46FA-B73C-10AABAC54C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F21975A-378E-46FA-B73C-10AABAC54C5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
