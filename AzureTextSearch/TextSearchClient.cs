@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Two10.AzureIndexStore;
@@ -19,9 +15,19 @@ namespace Two10.AzureTextSearch
             this.tableClient = account.CreateCloudTableClient();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="cacheLifetimeInSeconds">The lifetime of a cached index, set to zero for no caching. Default is 60 seconds.</param>
+        /// <returns></returns>
         public TextSearchIndex GetTextSearchIndexReference(string name, int cacheLifetimeInSeconds = 60)
         {
             var table = tableClient.GetTableReference(string.Format("waztextsearch{0}", name));
+            if (cacheLifetimeInSeconds <= 0)
+            {
+                return new TextSearchIndex(new IndexStore<Metadata>(table, name));
+            }
             return new TextSearchIndex(new CachedIndexStore<Metadata>(table, name, cacheLifetimeInSeconds));
         }
 

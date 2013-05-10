@@ -2,7 +2,7 @@
 using Microsoft.WindowsAzure.Storage;
 using NUnit.Framework;
 
-namespace Two10.AzureGraphStore.Tests
+namespace Two10.StorageExtension.Tests
 {
     internal class Foo
     {
@@ -38,7 +38,7 @@ namespace Two10.AzureGraphStore.Tests
             var jsonClient = account.CreateCloudJsonClient();
             var store = jsonClient.GetJsonStoreReference<Foo>("testfoo");
 
-            var foo1 = new Foo {Bar = "BAR", Baz = 3};
+            var foo1 = new Foo { Bar = "BAR", Baz = 3 };
             store.Put("item1", foo1);
 
             var foo2 = store.Get("item1");
