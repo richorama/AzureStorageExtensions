@@ -30,16 +30,16 @@ namespace Two10.AzureIndexStore
             return new IndexStore<Dictionary<string, string>>(table, name);
         }
 
-        public CachedIndexStore<T> GetCachedIndexReference<T>(string name, CacheItemPolicy policy)
+        public CachedIndexStore<T> GetCachedIndexReference<T>(string name, int cacheLifetimeInSeconds)
         {
             var table = tableClient.GetTableReference(string.Format("wazindex{0}", name));
-            return new CachedIndexStore<T>(table, name, policy);
+            return new CachedIndexStore<T>(table, name, cacheLifetimeInSeconds);
         }
 
-        public CachedIndexStore<Dictionary<string, string>> GetCachedIndexReference(string name, CacheItemPolicy policy)
+        public CachedIndexStore<Dictionary<string, string>> GetCachedIndexReference(string name, int cacheLifetimeInSeconds)
         {
             var table = tableClient.GetTableReference(string.Format("wazindex{0}", name));
-            return new CachedIndexStore<Dictionary<string, string>>(table, name, policy);
+            return new CachedIndexStore<Dictionary<string, string>>(table, name, cacheLifetimeInSeconds);
         }
 
         public IEnumerable<string> ListIndexs()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -8,14 +9,13 @@ namespace Two10.AzureIndexStore
     public class CachedIndexStore<T> : IndexStore<T>
     {
         private MemoryCache cache;
-        private CacheItemPolicy policy;
+        private int cacheLifetimeInSeconds;
 
-        public CachedIndexStore(CloudTable table, string name, CacheItemPolicy policy)
+        public CachedIndexStore(CloudTable table, string name, int cacheLifetimeInSeconds = 60)
             : base(table, name)
         {
             this.cache = new MemoryCache(name);
-            this.policy = policy;
-
+            this.cacheLifetimeInSeconds = cacheLifetimeInSeconds;
         }
 
         public override IEnumerable<IndexEntry<T>> Query(string key)
@@ -24,7 +24,7 @@ namespace Two10.AzureIndexStore
             if (null == result)
             {
                 result = base.Query(key).ToArray();
-                cache.Add(key, result, policy);
+                cache.Add(key, result, new CacheItemPolicy{ AbsoluteExpiration = DateTime.Now.AddSeconds(this.cacheLifetimeInSeconds)});
             }
             return result;
         }

@@ -19,10 +19,10 @@ namespace Two10.AzureTextSearch
             this.tableClient = account.CreateCloudTableClient();
         }
 
-        public TextSearchIndex GetTextSearchIndexReference(string name)
+        public TextSearchIndex GetTextSearchIndexReference(string name, int cacheLifetimeInSeconds = 60)
         {
             var table = tableClient.GetTableReference(string.Format("waztextsearch{0}", name));
-            return new TextSearchIndex(new CachedIndexStore<Metadata>(table, name, new CacheItemPolicy(){ SlidingExpiration = TimeSpan.FromMinutes(5)}));
+            return new TextSearchIndex(new CachedIndexStore<Metadata>(table, name, cacheLifetimeInSeconds));
         }
 
         public IEnumerable<string> ListTextSearchIndexes()
