@@ -79,7 +79,7 @@ namespace Two10.AzureJsonStore
 
         public IEnumerable<string> Query()
         {
-            return container.ListBlobs().Select(x => x.Uri.Segments.Last());
+            return container.ListBlobs().Select(x => Uri.UnescapeDataString(x.Uri.Segments.Last()));
         }
 
         public void CreateIfNotExists()
