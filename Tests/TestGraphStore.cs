@@ -113,8 +113,26 @@ namespace Two10.StorageExtension.Tests
             var graphClient = account.CreateCloudGraphClient();
             var items = graphClient.ListGraphs().Select(x => x.Name).ToArray();
             Assert.Contains("test", items);
-            Assert.AreEqual(1, items.Length);
+            Assert.AreNotEqual(0, items.Length);
         }
 
+
+        [Test]
+        public void TestMD5Hash()
+        {
+            var graphClient = account.CreateCloudGraphClient();
+            var graph = graphClient.GetGraphReference("test3");
+            graph.CreateIfNotExists();
+
+            graph.KeyEncoder = Graph.MD5Hash;
+            graph.Put(new Triple("Richard", "Loves", "Spam"));
+
+            var triples = graph.Get("Richard", "Loves", "Spam").ToArray();
+            Assert.AreEqual(1, triples.Length);
+            Assert.AreEqual("Richard", triples[0].Subject);
+            Assert.AreEqual("Loves", triples[0].Property);
+            Assert.AreEqual("Spam", triples[0].Value);
+            graph.DeleteIfExists();
+        }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Two10.AzureGraphStore
@@ -22,6 +23,7 @@ namespace Two10.AzureGraphStore
         {
             this.Name = name;
             this.table = table;
+            this.KeyEncoder = x => x;
         }
 
         public void Delete()
@@ -51,17 +53,17 @@ namespace Two10.AzureGraphStore
                 {
                     () =>
                         {
-                            var entity1 = new GraphEntity(triple) { PartitionKey = JoinKey(PROPERTY_SUBJECT, triple.Property, triple.Subject), RowKey = triple.Value };
+                            var entity1 = new GraphEntity(triple) { PartitionKey = JoinKey(PROPERTY_SUBJECT, triple.Property, triple.Subject), RowKey = KeyEncoder(triple.Value) };
                             table.Execute(TableOperation.InsertOrReplace(entity1));
                         },
                     () =>
                         {
-                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(SUBJECT_VALUE, triple.Subject, triple.Value), RowKey = triple.Property};
+                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(SUBJECT_VALUE, triple.Subject, triple.Value), RowKey = KeyEncoder(triple.Property)};
                             table.Execute(TableOperation.InsertOrReplace(entity2));
                         },
                     () =>
                         {
-                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(VALUE_PROPERTY, triple.Value, triple.Property), RowKey = triple.Subject};
+                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(VALUE_PROPERTY, triple.Value, triple.Property), RowKey = KeyEncoder(triple.Subject)};
                             table.Execute(TableOperation.InsertOrReplace(entity3));
                         }
                 };
@@ -80,17 +82,17 @@ namespace Two10.AzureGraphStore
                 {
                     () =>
                         {
-                            var entity1 = new GraphEntity(triple) {PartitionKey = JoinKey(PROPERTY_SUBJECT, triple.Property, triple.Subject), RowKey = triple.Value, ETag = "*"};
+                            var entity1 = new GraphEntity(triple) {PartitionKey = JoinKey(PROPERTY_SUBJECT, triple.Property, triple.Subject), RowKey = KeyEncoder(triple.Value), ETag = "*"};
                             table.Execute(TableOperation.Delete(entity1));
                         },
                     () =>
                         {
-                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(SUBJECT_VALUE, triple.Subject, triple.Value), RowKey = triple.Property, ETag = "*"};
+                            var entity2 = new GraphEntity(triple) {PartitionKey = JoinKey(SUBJECT_VALUE, triple.Subject, triple.Value), RowKey = KeyEncoder(triple.Property), ETag = "*"};
                             table.Execute(TableOperation.Delete(entity2));
                         },
                     () =>
                         {
-                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(VALUE_PROPERTY, triple.Value, triple.Property), RowKey = triple.Subject, ETag = "*"};
+                            var entity3 = new GraphEntity(triple) {PartitionKey = JoinKey(VALUE_PROPERTY, triple.Value, triple.Property), RowKey = KeyEncoder(triple.Subject), ETag = "*"};
                             table.Execute(TableOperation.Delete(entity3));
                         }
                 };
@@ -103,9 +105,9 @@ namespace Two10.AzureGraphStore
             this.Delete(new Triple(subject, property, value));
         }
 
-        private static string JoinKey(string dimension, string value1, string value2)
+        private string JoinKey(string dimension, string value1, string value2)
         {
-            return string.Format("{0}~{1}~{2}", dimension, value1, value2);
+            return string.Format("{0}~{1}~{2}", dimension, KeyEncoder(value1), KeyEncoder(value2));
         }
 
         public IEnumerable<Triple> Get(string subject = "", string property = "", string value = "")
@@ -147,14 +149,14 @@ namespace Two10.AzureGraphStore
             {
                 return QueryTriples(PROPERTY_SUBJECT, property);
             }
-            
+
             // return all triples, not recommended!
             return QueryTriples();
         }
 
         private IEnumerable<Triple> RetrieveSingleTriple(string subject, string property, string value)
         {
-            var val = table.Execute(TableOperation.Retrieve<GraphEntity>(JoinKey(SUBJECT_VALUE,subject, value), property));
+            var val = table.Execute(TableOperation.Retrieve<GraphEntity>(JoinKey(SUBJECT_VALUE, subject, value), KeyEncoder(property)));
             if (null != val.Result)
             {
                 yield return new Triple(subject, property, value);
@@ -171,7 +173,7 @@ namespace Two10.AzureGraphStore
         private IEnumerable<Triple> QueryTriples(string dimension, string pk1)
         {
             var query = new TableQuery<GraphEntity>();
-            query.Where(string.Format("PartitionKey gt '{1}~{0}~' and PartitionKey lt '{1}~{0}~~'", pk1, dimension));
+            query.Where(string.Format("PartitionKey gt '{1}~{0}~' and PartitionKey lt '{1}~{0}~~'", KeyEncoder(pk1), dimension));
             return table.ExecuteQuery(query).Select(entity => entity.ToTriple());
         }
 
@@ -180,6 +182,20 @@ namespace Two10.AzureGraphStore
             var query = new TableQuery<GraphEntity>();
             query.Where(string.Format("PartitionKey gt '{0}~' and PartitionKey lt '{0}~~'", SUBJECT_VALUE));
             return table.ExecuteQuery(query).Select(entity => entity.ToTriple());
+        }
+
+        public Func<string, string> KeyEncoder { get; set; }
+
+        public static string MD5Hash(string input)
+        {
+            var hash = MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(input));
+
+            var sb = new StringBuilder();
+            foreach (var b in hash)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+            return sb.ToString();
         }
     }
 }
