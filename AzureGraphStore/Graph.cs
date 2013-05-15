@@ -18,7 +18,6 @@ namespace Two10.AzureGraphStore
         private const string SUBJECT_VALUE = "sv";
         private const string VALUE_PROPERTY = "vp";
 
-
         public Graph(CloudTable table, string name)
         {
             this.Name = name;
