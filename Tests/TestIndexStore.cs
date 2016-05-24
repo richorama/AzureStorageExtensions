@@ -6,9 +6,8 @@ using NUnit.Framework;
 namespace Two10.StorageExtension.Tests
 {
     [TestFixture]
-    public class TestIndexStore
+    public class TestIndexStore : TestBase
     {
-        private readonly CloudStorageAccount account = CloudStorageAccount.DevelopmentStorageAccount;
 
         private class Foo
         {
@@ -18,7 +17,7 @@ namespace Two10.StorageExtension.Tests
         [TestFixtureTearDown]
         public void TearDown()
         {
-            var indexClient = account.CreateCloudIndexClient();
+            var indexClient = Account.CreateCloudIndexClient();
             var index = indexClient.GetIndexReference<Foo>("test");
             index.DeleteIfExists();
         }
@@ -26,7 +25,7 @@ namespace Two10.StorageExtension.Tests
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var indexClient = account.CreateCloudIndexClient();
+            var indexClient = Account.CreateCloudIndexClient();
             var index = indexClient.GetIndexReference<Foo>("test");
             index.CreateIfNotExists();
         }
@@ -34,7 +33,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestIndex()
         {
-            var indexClient = account.CreateCloudIndexClient();
+            var indexClient = Account.CreateCloudIndexClient();
             var index = indexClient.GetIndexReference<Foo>("test");
             index.Put("foo", "bar");
 
@@ -60,7 +59,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestDictionary()
         {
-            var indexClient = account.CreateCloudIndexClient();
+            var indexClient = Account.CreateCloudIndexClient();
             var index = indexClient.GetIndexReference("test2");
             index.CreateIfNotExists();
             index.Put("X", "Y");

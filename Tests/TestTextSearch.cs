@@ -6,7 +6,7 @@ using Two10.AzureTextSearch;
 namespace Two10.StorageExtension.Tests
 {
     [TestFixture]
-    public class TestTextSearch
+    public class TestTextSearch  : TestBase
     {
         [Test]
         public void TestTokenizer()
@@ -21,12 +21,11 @@ namespace Two10.StorageExtension.Tests
             Assert.AreEqual(new[] { "cat", "sat", "mat" }, tokens);
         }
 
-        private CloudStorageAccount account = CloudStorageAccount.DevelopmentStorageAccount;
 
         [TestFixtureTearDown]
         public void TearDown()
         {
-            var textClient = account.CreateCloudTextSearchClient();
+            var textClient = Account.CreateCloudTextSearchClient();
             var text = textClient.GetTextSearchIndexReference("test");
             text.DeleteIfExists();
         }
@@ -34,7 +33,7 @@ namespace Two10.StorageExtension.Tests
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var textClient = account.CreateCloudTextSearchClient();
+            var textClient = Account.CreateCloudTextSearchClient();
             var text = textClient.GetTextSearchIndexReference("test");
             text.CreateIfNotExists();
         }
@@ -42,7 +41,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestIndex()
         {
-            var textClient = account.CreateCloudTextSearchClient();
+            var textClient = Account.CreateCloudTextSearchClient();
             var text = textClient.GetTextSearchIndexReference("test");
             text.Index(LOREM, "1");
             var documents = text.Search("consectetur incididunt veniam").ToArray();
@@ -53,7 +52,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestIndex2()
         {
-            var textClient = account.CreateCloudTextSearchClient();
+            var textClient = Account.CreateCloudTextSearchClient();
             var text = textClient.GetTextSearchIndexReference("test2");
             text.CreateIfNotExists();
 

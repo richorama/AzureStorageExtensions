@@ -11,15 +11,13 @@ namespace Two10.StorageExtension.Tests
     }
 
     [TestFixture]
-    public class Tests
+    public class Tests : TestBase
     {
-
-        private CloudStorageAccount account = CloudStorageAccount.DevelopmentStorageAccount;
 
         [TestFixtureTearDown]
         public void TearDown()
         {
-            var jsonClient = account.CreateCloudJsonClient();
+            var jsonClient = Account.CreateCloudJsonClient();
             var store = jsonClient.GetJsonStoreReference<Foo>("testfoo");
             store.DeleteIfExists();
         }
@@ -27,7 +25,7 @@ namespace Two10.StorageExtension.Tests
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var jsonClient = account.CreateCloudJsonClient();
+            var jsonClient = Account.CreateCloudJsonClient();
             var store = jsonClient.GetJsonStoreReference<Foo>("testfoo");
             store.CreateIfNotExists();
         }
@@ -35,7 +33,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestSingleEntity()
         {
-            var jsonClient = account.CreateCloudJsonClient();
+            var jsonClient = Account.CreateCloudJsonClient();
             var store = jsonClient.GetJsonStoreReference<Foo>("testfoo");
 
             var foo1 = new Foo { Bar = "BAR", Baz = 3 };
@@ -61,7 +59,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestQueryTables()
         {
-            var jsonClient = account.CreateCloudJsonClient();
+            var jsonClient = Account.CreateCloudJsonClient();
             var stores = jsonClient.ListJsonStores().ToArray();
             Assert.AreEqual(1, stores.Length);
             Assert.AreEqual("testfoo", stores[0]);

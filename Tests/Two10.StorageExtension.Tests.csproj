@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestBase.cs" />
     <Compile Include="TestIndexStore.cs" />
     <Compile Include="TestJsonStore.cs" />
     <Compile Include="TestGraphStore.cs" />

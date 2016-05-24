@@ -6,15 +6,14 @@ using Two10.AzureGraphStore;
 namespace Two10.StorageExtension.Tests
 {
     [TestFixture]
-    public class TestGraphStore
+    public class TestGraphStore : TestBase
     {
 
-        private CloudStorageAccount account = CloudStorageAccount.DevelopmentStorageAccount;
 
         [TestFixtureTearDown]
         public void TearDown()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.DeleteIfExists();
         }
@@ -22,7 +21,7 @@ namespace Two10.StorageExtension.Tests
         [TestFixtureSetUp]
         public void SetUp()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.CreateIfNotExists();
         }
@@ -30,7 +29,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestSingleEntity()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.Put(new Triple("Richard", "Loves", "Spam"));
 
@@ -44,7 +43,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestMultipleEntities()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.Put(new Triple("Bob", "Loves", "DotNet"));
             graph.Put("Bob", "Loves", "JavaScript");
@@ -69,7 +68,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestDelete()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test");
             graph.Put("Wendy", "Likes", "Cheese");
 
@@ -85,7 +84,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestQueryBySingleDimension()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("testsingledimension");
             graph.CreateIfNotExists();
             graph.Put("Dave", "Likes", "Chicken");
@@ -110,7 +109,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestListGraphs()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var items = graphClient.ListGraphs().Select(x => x.Name).ToArray();
             Assert.Contains("test", items);
             Assert.AreNotEqual(0, items.Length);
@@ -120,7 +119,7 @@ namespace Two10.StorageExtension.Tests
         [Test]
         public void TestMD5Hash()
         {
-            var graphClient = account.CreateCloudGraphClient();
+            var graphClient = this.Account.CreateCloudGraphClient();
             var graph = graphClient.GetGraphReference("test3");
             graph.CreateIfNotExists();
 
