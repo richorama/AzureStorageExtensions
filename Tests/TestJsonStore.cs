@@ -56,6 +56,7 @@ namespace Two10.StorageExtension.Tests
             Assert.AreEqual(0, items.Length);
         }
 
+        /*
         [Test]
         public void TestQueryTables()
         {
@@ -64,7 +65,7 @@ namespace Two10.StorageExtension.Tests
             Assert.AreEqual(1, stores.Length);
             Assert.AreEqual("testfoo", stores[0]);
         }
-
+        */
 
     }
 }

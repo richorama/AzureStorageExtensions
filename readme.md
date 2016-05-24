@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/yqwgxwap3rf6wbmk?svg=true)](https://ci.appveyor.com/project/richorama/azurestorageextensions)
+
 # Azure Storage Extensions
 
 A set of extensions to the Azure Storage SDK, to easily enable new types of storage, as abstractions over existing services.
