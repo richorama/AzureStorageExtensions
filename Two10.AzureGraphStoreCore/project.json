@@ -1,0 +1,31 @@
+﻿{
+  "version": "1.0.0",
+  "packOptions": {
+    "summary": "A .NET client to Table Storage to make it look like a graph database",
+    "owners": [ "ealsur" ],
+    "projectUrl": "http://github.com/ealsur/AzureStorageExtensions",
+    "licenseUrl": "http://github.com/ealsur/AzureStorageExtensions/license.txt",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/ealsur/AzureStorageExtensions"
+    }
+  },
+  "dependencies": {
+    "WindowsAzure.Storage": "7.0.2-preview"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [ "dnxcore50", "portable-net451+win8" ],
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0-rc2-*"
+        }
+      }
+    },
+    "net461": { },
+    "net46": { },
+    "net45": { }
+  }
+}
