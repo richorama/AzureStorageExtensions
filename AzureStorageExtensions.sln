@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureGraphStore", "AzureGraphStore\Two10.AzureGraphStore.csproj", "{AD7FB5DC-92B1-49F0-BC73-0311B1DBF9D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.StorageExtension.Tests", "Tests\Two10.StorageExtension.Tests.csproj", "{63E1BE97-2388-48A1-B63C-5E816429FDD3}"
@@ -10,6 +12,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureIndexStore", "AzureIndexStore\Two10.AzureIndexStore.csproj", "{BA1A6F28-F49F-484C-9F59-97DBB66E746B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two10.AzureTextSearch", "AzureTextSearch\Two10.AzureTextSearch.csproj", "{4F21975A-378E-46FA-B73C-10AABAC54C5E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Two10.AzureGraphStoreCore", "Two10.AzureGraphStoreCore\Two10.AzureGraphStoreCore.xproj", "{328E4DDC-AD3A-4761-9CF3-A2F6E0F6FCCA}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Two10.StorageExtensionCore.Tests", "Two10.StorageExtensionCore.Tests\Two10.StorageExtensionCore.Tests.xproj", "{66CB1C5B-D5BF-42FF-8B28-AB53E8FC7314}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +43,14 @@ Global
 		{4F21975A-378E-46FA-B73C-10AABAC54C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F21975A-378E-46FA-B73C-10AABAC54C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F21975A-378E-46FA-B73C-10AABAC54C5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{328E4DDC-AD3A-4761-9CF3-A2F6E0F6FCCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{328E4DDC-AD3A-4761-9CF3-A2F6E0F6FCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{328E4DDC-AD3A-4761-9CF3-A2F6E0F6FCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{328E4DDC-AD3A-4761-9CF3-A2F6E0F6FCCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66CB1C5B-D5BF-42FF-8B28-AB53E8FC7314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66CB1C5B-D5BF-42FF-8B28-AB53E8FC7314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66CB1C5B-D5BF-42FF-8B28-AB53E8FC7314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66CB1C5B-D5BF-42FF-8B28-AB53E8FC7314}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
